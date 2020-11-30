@@ -64,7 +64,7 @@ def exec_pull(branch):
     # checkout_cmd = "git checkout " + branch
     print("git pull")
     # subprocess.call(checkout_cmd, shell=True)
-    result = subprocess.check_output("git pull", shell=True, universal_newlines=True)
+    result = subprocess.check_output("git pull", shell=True, stderr=subprocess.STDOUT,  universal_newlines=True)
     write_log(result)
 
 def run(path, branch):
