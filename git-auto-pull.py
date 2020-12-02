@@ -60,6 +60,7 @@ def is_git_repo(path):
     return subprocess.call(['git', '-C', path, 'status'], \
             stderr=subprocess.STDOUT, stdout=open(os.devnull, 'w')) == 0
 
+
 def exec_pull(branch):
     # checkout_cmd = "git checkout " + branch
     print("git pull")
@@ -78,7 +79,7 @@ def run(path, branch):
             old_path = os.getcwd()
             os.chdir(path)
             write_log(path + " is git repo")
-            result = subprocess.check_output("git diff", shell=True, universal_newlines=True ) #, encoding='utf-8')
+            result = subprocess.check_output("git diff", shell=True, universal_newlines=True, encoding='utf-8')
             write_log(result)
 
             exec_pull(branch)
