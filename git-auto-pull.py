@@ -65,8 +65,13 @@ def exec_pull(branch):
     # checkout_cmd = "git checkout " + branch
     print("git pull")
     # subprocess.call(checkout_cmd, shell=True)
-    result = subprocess.check_output("git pull", shell=True, stderr=subprocess.STDOUT,  universal_newlines=True)
-    write_log(result)
+    try:
+        result = subprocess.check_output("git pull", shell=True, stderr=subprocess.STDOUT,  universal_newlines=True)
+        write_log(result)
+    except Exception as e:
+        write_log("=====Error occurred=====")
+        write_log(f"Error occurred : {e}")
+        write_log("========================")
 
 def run(path, branch):
     filenames = os.listdir(path)
@@ -79,7 +84,7 @@ def run(path, branch):
             old_path = os.getcwd()
             os.chdir(path)
             write_log(path + " is git repo")
-            result = subprocess.check_output("git diff", shell=True, universal_newlines=True, encoding='utf-8')
+            result = subprocess.check_output("git --no-pager diff", shell=True, universal_newlines=True, encoding='utf-8')
             write_log(result)
 
             exec_pull(branch)
@@ -110,7 +115,7 @@ def main():
     with open(log_path, "r" , encoding='utf8') as file:
         text = file.read()
 
-    sendMail(to=['neo2544@naver.com'], text=text , title=title, files=files)
+    sendMail(text=text , title=title, files=files)
 
 if __name__ == "__main__":
     main()
